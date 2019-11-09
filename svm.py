@@ -13,10 +13,8 @@ def loadDataSet():
     :param train_label: y训练数据集
     :param y_test: y验证数据集
     '''
-    train_data, train_label = datasets.load_svmlight_file("C:/users/lin78/desktop/"
-                                                          "experimentData/a9a.txt")
-    test_data, test_label = datasets.load_svmlight_file("C:/users/lin78/desktop/experimentData/"
-                                                        "a9at.txt", n_features = 123)
+    train_data, train_label = datasets.load_svmlight_file("a9a.txt")
+    test_data, test_label = datasets.load_svmlight_file("a9at.txt", n_features = 123)
     train_data = train_data.A   #将scr.matrix转换为np.array
     test_data = test_data.A
     train_row = train_data.shape[0]

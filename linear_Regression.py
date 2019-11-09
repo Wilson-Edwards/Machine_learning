@@ -11,7 +11,7 @@ def loadDataSet():
     :param y_train: y训练数据集
     :param y_test: y验证数据集
     '''
-    housing = datasets.load_svmlight_file("C:/users/lin78/desktop/housing_scale.txt")
+    housing = datasets.load_svmlight_file("housing_scale.txt")
     x_train, x_test, y_train, y_test = model_selection.train_test_split(housing[0], housing[1],
                                                         test_size=0.33, random_state=42)
     x_train = x_train.A   #将scipy中的matrix转换为ndarray ,注意使用type函数检验数据类型
@@ -25,14 +25,6 @@ def loadDataSet():
     x_test = np.mat(x_test)
     y_train = np.mat(y_train).T
     y_test = np.mat(y_test).T
-    '''
-    #---------------shape---------------------
-    print("x_train: ", x_train.shape)
-    print("y_train: ", y_train.shape)
-    print("x_test: ", x_test.shape)
-    print("y_test: ", y_test.shape)
-    #-----------------------------------------
-    '''
     return x_train, x_test, y_train, y_test
 
 def get_weight(x_train, y_train):
@@ -69,8 +61,12 @@ def loss(x_train, x_test, y_train, y_test, weights):
 
 if __name__ == '__main__':
     x_train, x_test, y_train, y_test = loadDataSet()
+    weights_notUpdate = np.random.random((x_train.shape[1], 1))  #随机初始化
+    weights_notUpdate = np.mat(weights_notUpdate)
     weights = get_weight(x_train, y_train)
-    print("weights: ", weights.shape)
-    loss_train, loss_val = loss(x_train, x_test, y_train, y_test,weights)
+    loss_notUpdate = np.sum(np.square(y_train - x_train * weights_notUpdate)) /\
+                     (2 * y_train.shape[0])
+    loss_train, loss_val = loss(x_train, x_test, y_train, y_test, weights)
+    print("Loss: ", loss_notUpdate)
     print("loss_train: ", loss_train)
     print("loss_val: ", loss_val)

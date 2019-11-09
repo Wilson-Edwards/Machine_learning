@@ -13,7 +13,7 @@ def loadDataSet():
     :param y_train: y训练数据集
     :param y_test: y验证数据集
     '''
-    housing = datasets.load_svmlight_file("C:/users/lin78/desktop/housing_scale.txt")
+    housing = datasets.load_svmlight_file("housing_scale.txt")
     x_train, x_test, y_train, y_test = model_selection.train_test_split(housing[0], housing[1],
                                                         test_size=0.33, random_state=42)
     x_train = x_train.A   #将scipy中的matrix转换为ndarray ,注意使用type函数检验数据类型
@@ -48,7 +48,7 @@ def SGD(x_train, y_train, numIter = 100):
     for j in range(numIter):
         dataIndex = list(range(row))  # 每一次梯度下降所选取的行的下标
         for i in range(row):
-            rate = 1/(1.0 + j + i) + 0.0001 #每次迭代后rate会减小，但永远会比0.01大、
+            rate = 1/(1.0 + j + i) #每次迭代后rate会减小
             randIndex = int(random.uniform(0, len(dataIndex))) #该次迭代所选取的行下标
             y_predict = x_train[randIndex] * weights   #求该行样本预测y值
             y_true = y_train[randIndex]
@@ -59,6 +59,7 @@ def SGD(x_train, y_train, numIter = 100):
     weights_array = weights_array.A
     weights_array = np.delete(weights_array, 0, 1) #删除第一列数据
     return weights_array
+
 
 def loss(x_train, x_test, y_train, y_test, weights_array):
     '''
@@ -84,10 +85,6 @@ def loss(x_train, x_test, y_train, y_test, weights_array):
         loss_val = y_test.T * y_test - 2 * weights.T * x_test.T * y_test \
                + weights.T * x_test.T * x_test * weights
         loss_val = loss_val / (2 * y_test.shape[0])
-        '''
-        loss_train = np.sum(np.square(y_train - x_train * weights)) / (2 * y_train.shape[0])
-        loss_val = np.sum(np.square(y_test - x_test * weights)) / (2 * y_test.shape[0])
-        '''
         loss_train_array = np.append(loss_train_array, loss_train[0][0])
         loss_val_array = np.append(loss_val_array, loss_val[0][0])
 

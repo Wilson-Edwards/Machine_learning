@@ -12,8 +12,8 @@ def loadDataSet():
     :param train_label: y训练数据集
     :param y_test: y验证数据集
     '''
-    train_data, train_label = datasets.load_svmlight_file("C:/users/lin78/desktop/a9a.txt")
-    test_data, test_label = datasets.load_svmlight_file("C:/users/lin78/desktop/a9at.txt", n_features = 123)
+    train_data, train_label = datasets.load_svmlight_file("a9a.txt")
+    test_data, test_label = datasets.load_svmlight_file("a9at.txt", n_features = 123)
     train_data = train_data.A   #将scr.matrix转换为np.array
     test_data = test_data.A
     train_label[train_label == -1] = 0
@@ -110,4 +110,6 @@ if __name__ == '__main__':
     weights_array = batch_SGD(train_data, train_label, numIter, minibatch_size)
     loss_train_array, loss_val_array = cross_entropy_loss(train_data, train_label,
                                                           test_data, test_label, weights_array)
+    print("loss_train:\n", loss_train_array)
+    print("loss_val:\n", loss_val_array)
     plot_loss_and_numIter(loss_train_array, loss_val_array)
